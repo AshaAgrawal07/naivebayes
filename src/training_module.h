@@ -53,12 +53,11 @@ public:
 
     /**
      * calculates the posterior probabilities using logarithms
-     * @param module the model we want to compute the class probabilities for
+     * @param input_feature the Feature_Vector (for test images) we want to fine the classification for
      * @param prior vector of P(classification)
-     * @return a vector of pairs of classifications 0-9 and its corresponding posterior probability
+     * @return int, the most probable classification for the given Feature_Vector
      */
-    std::vector<std::pair<int, double>> calculate_posterior_probability(std::vector<std::vector<std::vector>> module,
-                                                                        std::vector<double> prior);
+    int calculate_posterior_probability(Feature_Vector input_feature, std::vector<double> prior);
 
     /**
      * reads the module from the input stream as a 10x28x28 3D vector

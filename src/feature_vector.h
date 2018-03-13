@@ -22,6 +22,13 @@ public:
     Feature_Vector();
 
     /**
+     *
+     * @param i the row
+     * @param j the column
+     * @return the boolean value stored there
+     */
+    bool get_Value(int i, int j);
+    /**
      * Basically takes in the characters and converts it into booleans: 0 if whitespace, 1 otherwise
      * @param ins the input stream that the function will read and turn into a 28x28 boolean vector
      */

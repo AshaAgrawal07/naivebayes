@@ -109,15 +109,14 @@ std::vector<double> priors(int classification, vector <std::pair<int, Feature_Ve
     return prior;
 }
 
-std::vector<std::pair<int, double>> calculate_posterior_probability(std::vector<std::vector<std::vector>> module,
-                                                                    std::vector<double> prior) {
+int calculate_posterior_probability(Feature_Vector input_feature, std::vector<double> prior) {
     std::vector<std::pair<int, double>> posteriors;
     double posterior_probability = 0;
     for (int i = 0; i < 10; i++) {
         posterior_probability += prior[i];
         for (int j = 0; j<28; j++) {
             for (int k = 0; k < 28; k++) {
-                posterior_probability += std::log(module[j][k]);
+                posterior_probability += std::log((input_feature.get_Value(j, k))/module[i][j][k]);
             }
         }
         std::pair<int, double> pairs;
@@ -125,7 +124,19 @@ std::vector<std::pair<int, double>> calculate_posterior_probability(std::vector<
         pairs.second = posterior_probability;
         posteriors.push_back(pairs);
     }
-    return posteriors;
+
+    //now go through all of the probabilities and find the class with the highest probability
+    double max_probability = 0;
+    int max_class = 0;
+
+    for(int i = 0; i < 10; i++) {
+        if (posteriors.second > max_probability) {
+            max_probability = posteriors.second;
+            max_class = posteriors.first;
+        }
+    }
+    
+    return max_class;
 }
 
 void Training_Module::read_module(std::istream &ins) {

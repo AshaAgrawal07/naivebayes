@@ -6,6 +6,8 @@
 #include "data_file.h"
 #include <iostream>
 
+vector <std::vector<bool>> feature;
+
 Feature_Vector::Feature_Vector() {
     std::vector<std::vector<bool>> feature;
 }
@@ -24,6 +26,10 @@ void Feature_Vector::read(std::istream& ins) {
             feature[i].push_back(input);
         }
     }
+}
+
+bool get_Value(int i, int j) {
+    return feature[i][j];
 }
 
 void Feature_Vector::write(std::ostream& outs) {
