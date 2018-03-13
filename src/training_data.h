@@ -8,6 +8,7 @@
 #include "feature_vector.h"
 
 class Training_Data {
+    std::vector<std::vector<std::vector>> probabilities;
 private:
     /**
      * reads the files and helps in training or testing
@@ -28,5 +29,13 @@ public:
      * be made through the read_input function
      */
     void train(vector<std::pair<int, Feature_Vector>> images);
+
+    /**
+     * given a specific classification, search will go through all of the images and compute the probabilities for that
+     * classification and then compute the probabilities for each cell using the given laplace's smooting factor
+     * @param classification the specific number 0-9 that we want to compute the probabilities for
+     * @param images the vector of images that we have stored
+     */
+    void search(int classification, vector <std::pair<int, Feature_Vector>> images);
 };
 #endif //NAIVEBAYES_TRAINING_DATA_H
