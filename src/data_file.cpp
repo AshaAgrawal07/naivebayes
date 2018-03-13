@@ -4,10 +4,12 @@
 
 #include "data_file.h"
 
+std::vector <std::pair<int, Feature_Vector>> images;
+
 Data_File::data_file() {
-    std::vector<Feature_Vector> data;
+    std::vector<std::pair<int, Feature_Vector>> data;
 }
 
-int findClassification(Feature_Vector feature) {
-
+void push_back(Data_File image) {
+    images.push_back(image);
 }

@@ -4,13 +4,13 @@
 
 #ifndef NAIVEBAYES_DATA_FILE_H
 #define NAIVEBAYES_DATA_FILE_H
+
 #include "feature_vector.h"
 
-class  Data_File {
+class Data_File {
+    static std::vector <std::pair<int, Feature_Vector>> images;
 private:
-    std::vector<std::pair<int, Feature_Vector>> data;
-
-    public:
+public:
     /**
      * constructor for Data_File
      * basically, I have a single data_file for the entire project, and will push feature_vectors into it once its read
@@ -26,4 +26,5 @@ private:
     int findClassification(Feature_Vector feature);
 
 };
+
 #endif //NAIVEBAYES_DATA_FILE_H

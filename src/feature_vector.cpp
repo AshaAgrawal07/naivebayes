@@ -10,7 +10,7 @@ Feature_Vector::Feature_Vector() {
     std::vector<std::vector<bool>> feature;
 }
 
-void Feature_Vector::read(istream& ins) {
+Feature_Vector Feature_Vector::read(istream& ins) {
     for (int i = 0; i < 28; i++) {
         for (int j = 0; j < 28; j++) {
             bool input;
@@ -24,6 +24,7 @@ void Feature_Vector::read(istream& ins) {
             feature[i].push_back(input);
         }
     }
+    return feature;
 }
 
 void Feature_Vector::write(ostream& outs) {
