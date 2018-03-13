@@ -5,6 +5,7 @@
 #ifndef NAIVEBAYES_TRAINING_DATA_H
 #define NAIVEBAYES_TRAINING_DATA_H
 
+#include <vector>
 #include "feature_vector.h"
 
 class Training_Module {
@@ -32,6 +33,14 @@ private:
      */
     void search(int classification, vector <std::pair<int, Feature_Vector>> images);
 
+    /**
+     *
+     * @param classification the specific number 0-9 that we want to count the occurances for from given file
+     * @param images the vector of images that we have stored
+     * @return the probability of a specific class appearing in the entire file
+     */
+    void priors(int classification, vector <std::pair<int, Feature_Vector>> images);
+
 public:
 
     /**
@@ -40,21 +49,14 @@ public:
      * naive-bayes formula that was given
      * @param images a vector of pairs of a Feature_Vector and its corresponding classification as an int- which will
      * be made through the read_input function
+     * @return the 3D vector with the probabilities
      */
-    void train(vector<std::pair<int, Feature_Vector>> images);
-
-    /**
-     *
-     * @param classification the specific number 0-9 that we want to count the occurances for from given file
-     * @param images the vector of images that we have stored
-     * @return the probability of a specific class appearing in the entire file
-     */
-    double priors(int classification, vector <std::pair<int, Feature_Vector>> images);
+    std::vector<std::vector<std::vector<>>> train(vector<std::pair<int, Feature_Vector>> images);
 
     /**
      * calculates the posterior probabilities using logarithms
      * @param input_feature the Feature_Vector (for test images) we want to fine the classification for
-     * @param prior vector of P(classification)
+     * @param prior the vector of P(classification)
      * @return int, the most probable classification for the given Feature_Vector
      */
     int calculate_posterior_probability(Feature_Vector input_feature, std::vector<double> prior);

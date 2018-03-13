@@ -3,7 +3,6 @@
 //
 
 #include "feature_vector.h"
-#include "data_file.h"
 #include <iostream>
 
 vector <std::vector<bool>> feature;

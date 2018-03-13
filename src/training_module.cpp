@@ -7,6 +7,9 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
+
+using namespace std;
 
 std::vector <std::vector<std::vector>> probabilities;
 std::vector<std::vector<std::vector>> module;
@@ -14,8 +17,8 @@ std::vector<double> prior;
 
 vector <std::pair<int, Feature_Vector>> read_file_input() {
     std::string file_data_name;
-    std::srting file_answers_name;
-    std::istream ins;
+    std::string file_answers_name;
+    std::ifstream ins;
 
     std::ifstream training_data_file;
     std::ifstream training_answers_file;
@@ -94,7 +97,7 @@ void search(int classification, vector <std::pair<int, Feature_Vector>> images) 
     probabilities.push_back(cell_occurance_counter);
 }
 
-std::vector<double> priors(int classification, vector <std::pair<int, Feature_Vector>> images) {
+void priors(int classification, vector <std::pair<int, Feature_Vector>> images) {
     double classification_occurance_counter = 0;
 
     //go through each Feature_Vector and Classification pair
@@ -106,7 +109,6 @@ std::vector<double> priors(int classification, vector <std::pair<int, Feature_Ve
         }
     }
     prior.push_back(classification_occurance_counter / images.size());
-    return prior;
 }
 
 int calculate_posterior_probability(Feature_Vector input_feature, std::vector<double> prior) {
@@ -116,7 +118,7 @@ int calculate_posterior_probability(Feature_Vector input_feature, std::vector<do
         posterior_probability += prior[i];
         for (int j = 0; j<28; j++) {
             for (int k = 0; k < 28; k++) {
-                posterior_probability += std::log((input_feature.get_Value(j, k))/module[i][j][k]);
+                posterior_probability += log((input_feature.get_Value(j, k))/module[i][j][k]);
             }
         }
         std::pair<int, double> pairs;
@@ -130,12 +132,12 @@ int calculate_posterior_probability(Feature_Vector input_feature, std::vector<do
     int max_class = 0;
 
     for(int i = 0; i < 10; i++) {
-        if (posteriors.second > max_probability) {
-            max_probability = posteriors.second;
-            max_class = posteriors.first;
+        if (posteriors[i].second > max_probability) {
+            max_probability = posteriors[i].second;
+            max_class = posteriors[i].first;
         }
     }
-    
+
     return max_class;
 }
 
