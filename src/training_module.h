@@ -10,6 +10,7 @@
 class Training_Module {
     std::vector<std::vector<std::vector>> probabilities;
     std::vector<std::vector<std::vector>> module;
+    std::vector<double> prior;
 
 private:
     /**
@@ -51,6 +52,15 @@ public:
     double priors(int classification, vector <std::pair<int, Feature_Vector>> images);
 
     /**
+     * calculates the posterior probabilities using logarithms
+     * @param module the model we want to compute the class probabilities for
+     * @param prior vector of P(classification)
+     * @return a vector of pairs of classifications 0-9 and its corresponding posterior probability
+     */
+    std::vector<std::pair<int, double>> calculate_posterior_probability(std::vector<std::vector<std::vector>> module,
+                                                                        std::vector<double> prior);
+
+    /**
      * reads the module from the input stream as a 10x28x28 3D vector
      * @param ins the input stream
      */
@@ -64,7 +74,7 @@ public:
 };
 
 /**
- * opperator overloading
+ * operator overloading of >>
  * @param ins the input stream
  * @param model the module in question
  * @return the input stream
@@ -72,7 +82,7 @@ public:
 istream& operator >> (istream& ins, Training_Module model);
 
 /**
- * opperator overloading
+ * operator overloading of <<
  * @param outs the output stream
  * @param model the module in question
  * @return the output stream

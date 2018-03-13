@@ -10,6 +10,7 @@
 
 std::vector <std::vector<std::vector>> probabilities;
 std::vector<std::vector<std::vector>> module;
+std::vector<double> prior;
 
 vector <std::pair<int, Feature_Vector>> read_file_input() {
     std::string file_data_name;
@@ -51,6 +52,7 @@ void train(vector <std::pair<int, Feature_Vector>> images) {
     //go through images 10 times to find the all of the Frequency_Vectors with the specific classification
     for (int i = 0; i < 10; i++) {
         probabilities.search(i, images);
+        prior.priors(i, images);
     }
 }
 
@@ -92,7 +94,7 @@ void search(int classification, vector <std::pair<int, Feature_Vector>> images) 
     probabilities.push_back(cell_occurance_counter);
 }
 
-double priors(int classification, vector <std::pair<int, Feature_Vector>> images) {
+std::vector<double> priors(int classification, vector <std::pair<int, Feature_Vector>> images) {
     double classification_occurance_counter = 0;
 
     //go through each Feature_Vector and Classification pair
@@ -103,11 +105,30 @@ double priors(int classification, vector <std::pair<int, Feature_Vector>> images
             classification_occurance_counter++;
         }
     }
-    return classification_occurance_counter / images.size();
+    prior.push_back(classification_occurance_counter / images.size());
+    return prior;
 }
 
-void Training_Module::read_module(istream &ins) {
+std::vector<std::pair<int, double>> calculate_posterior_probability(std::vector<std::vector<std::vector>> module,
+                                                                    std::vector<double> prior) {
+    std::vector<std::pair<int, double>> posteriors;
+    double posterior_probability = 0;
+    for (int i = 0; i < 10; i++) {
+        posterior_probability += prior[i];
+        for (int j = 0; j<28; j++) {
+            for (int k = 0; k < 28; k++) {
+                posterior_probability += std::log(module[j][k]);
+            }
+        }
+        std::pair<int, double> pairs;
+        pairs.first = i;
+        pairs.second = posterior_probability;
+        posteriors.push_back(pairs);
+    }
+    return posteriors;
+}
 
+void Training_Module::read_module(std::istream &ins) {
     for (int k = 0; k < 10; k++) {
         for (int i = 0; i < 28; i++) {
             for (int j = 0; j < 28; j++) {
@@ -119,7 +140,7 @@ void Training_Module::read_module(istream &ins) {
     }
 }
 
-void Training_Module::write_module(ostream &outs) {
+void Training_Module::write_module(std::ostream &outs) {
     outs << "{";
     for (int k = 0; k < 10; k++) {
         outs << k << ": {";
@@ -144,13 +165,13 @@ void Training_Module::write_module(ostream &outs) {
     outs << "}";
 }
 
-istream &operator>>(istream &ins, Training_Module& model) {
-    model.read(ins);
+istream &operator>>(std::istream &ins, Training_Module& model) {
+    model.read_module(ins);
     return ins;
 }
 
-ostream &operator<<(ostream &outs, Training_Module& model) {
-    model.write(outs);
+ostream &operator<<(std::ostream &outs, Training_Module& model) {
+    model.write_module(outs);
     return outs;
 }
 

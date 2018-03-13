@@ -12,7 +12,7 @@ using namespace std;
 class Feature_Vector {
 
 private:
-    vector <vector<bool>> feature;
+    vector <std::vector<bool>> feature;
 public:
 
     /**
@@ -34,7 +34,7 @@ public:
 
 };
 /**
- * overloading opperator
+ * overloading operator >>
  * @param ins the input stream
  * @param featurev the feature vector in question
  * @return the input stream
@@ -42,7 +42,7 @@ public:
 istream& operator >> (istream& ins, Feature_Vector& featurev);
 
 /**
- * overloading opperator
+ * overloading operator <<
  * @param outs the output stream
  * @param featurev the feature vector in question
  * @return the output stream
