@@ -26,10 +26,27 @@ public:
      * @param ins the input stream that the function will read and turn into a 28x28 boolean vector
      */
     void read(istream& ins);
+
+    /**
+     * @param outs the out stream the function will use to output the Feature_Vector
+     */
     void write(ostream& outs);
 
 };
+/**
+ * overloading opperator
+ * @param ins the input stream
+ * @param featurev the feature vector in question
+ * @return the input stream
+ */
 istream& operator >> (istream& ins, Feature_Vector& featurev);
+
+/**
+ * overloading opperator
+ * @param outs the output stream
+ * @param featurev the feature vector in question
+ * @return the output stream
+ */
 ostream& operator << (ostream& outs, Feature_Vector featurev);
 
 #endif //NAIVEBAYES_ASHAAGRAWAL07_FEATURE_VECTOR_H

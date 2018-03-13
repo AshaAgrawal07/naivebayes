@@ -3,5 +3,5 @@ project(naivebayes)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(naivebayes src/feature_vector.cpp src/feature_vector.cpp src/training_data.cpp src/training_data.h src/module.cpp src/module.h)
+add_executable(naivebayes src/feature_vector.cpp src/feature_vector.cpp src/training_module.cpp)
 add_executable(unit-tests)
