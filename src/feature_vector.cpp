@@ -16,7 +16,7 @@ vector<vector<bool>> read(std::istream& ins) {
     for (int i = 0; i < 28; i++) {
         for (int j = 0; j < 28; j++) {
             bool input;
-            if (ins >> " ") {
+            if (!ins.eof()) {
                 ins >> input;
                 input = 0;
             } else {

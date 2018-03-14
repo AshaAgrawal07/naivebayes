@@ -12,7 +12,7 @@ using namespace std;
 int main() {
     //train the stuff
     //train will call search (creates 3D vector) and priors (which computes #times classification/total)
-    vector<vector<vector<double>>> images;
+    vector<pair<int, Feature_Vector>> images;
     ifstream ins;
     images = images.train();
 

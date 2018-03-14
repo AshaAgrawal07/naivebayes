@@ -9,11 +9,16 @@
 #include "feature_vector.h"
 
 class Training_Module {
-    vector<vector<vector<double>>> probabilities;
+
+    //10x28x28 vector of probabilities based on the training data
     vector<vector<vector<double>>> module;
+
+    //of size 10; probability of each classification based on the training data
     vector<double> prior;
 
 private:
+public:
+
     /**
      * reads the files and helps in training or testing
      * it depends on the file that is inputted
@@ -41,8 +46,6 @@ private:
      */
     void priors(int classification, vector <std::pair<int, Feature_Vector>> images);
 
-public:
-
     /**
      * creates a 3D vector (a vector of vectors of vectors) with the intended size of 10x28x28 that will store the probabilities
      * goes through the elements in the vectors for each classifications and computes the probabilities using the
@@ -51,7 +54,7 @@ public:
      * be made through the read_input function
      * @return the 3D vector with the probabilities
      */
-    std::vector<std::vector<std::vector<double>>> train(vector<std::pair<int, Feature_Vector>> images);
+    vector<vector<vector<double>>> train(vector<std::pair<int, Feature_Vector>> images);
 
     /**
      * calculates the posterior probabilities using logarithms

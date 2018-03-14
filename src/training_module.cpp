@@ -11,13 +11,12 @@
 
 using namespace std;
 
-vector <vector<vector<double>>> probabilities;
-vector<vector<vector>> module;
+vector<vector<vector<int>>> module;
 vector<double> prior;
 
-istream ins;
+ifstream ins;
 
-vector<pair<int, vector<vector<bool>>>> read_file_input() {
+vector<pair<int, Feature_Vector>> read_file_input() {
     string file_data_name;
     string file_answers_name;
 
@@ -39,11 +38,11 @@ vector<pair<int, vector<vector<bool>>>> read_file_input() {
 
     //at this point, i know that files will be read
     //now creating a vector of pairs that contains a Feature_Vector and its corresponding classification (int)
-    vector<pair<int, vector<vector<bool>>>> images;
+    vector<pair<int, Feature_Vector>> images;
     int classification;
     while (training_data_file) {
         Feature_Vector feature;
-        pair<int, vector<vector<bool>>> image;
+        pair<int, Feature_Vector> image;
         image = make_pair(classification, feature.read(ins));
         images.push_back(image);
     }
@@ -52,12 +51,14 @@ vector<pair<int, vector<vector<bool>>>> read_file_input() {
     return images;
 }
 
-void train(vector <std::pair<int, Feature_Vector>> images) {
+vector<vector<vector<double>>>train(vector<pair<int, Feature_Vector>> images) {
+    Training_Module trainer;
     //go through images 10 times to find the all of the Frequency_Vectors with the specific classification
     for (int i = 0; i < 10; i++) {
-        probabilities.search(i, images);
-        prior.priors(i, images);
+        trainer.search(i, images);
+        trainer.priors(i, images);
     }
+    return trainer.write_module(ostream::out&);
 }
 
 void search(int classification, vector <pair<int, Feature_Vector>> images) {
@@ -74,7 +75,7 @@ void search(int classification, vector <pair<int, Feature_Vector>> images) {
             //now go through the entire Feature_Vector and get the number of occurances of a '1' for a specific cell
             for (int j = 0; j < images[i].second.get_size(); j++) {
                 for (int k = 0; k < images[i].second.get_size(); k++) {
-                    if (images[i][j][k] == 1) {
+                    if (images[i].second.get_value(j, k) == 1) {
                         cell_occurance_counter[j][k]++;
                     }
                 }
@@ -94,8 +95,12 @@ void search(int classification, vector <pair<int, Feature_Vector>> images) {
             cell_occurance_counter[i][j] = computed_probability;
         }
     }
-    //add these freshly computed probabilities to the 3D probabilities vector
-    probabilities.push_back(cell_occurance_counter);
+    //add these freshly computed probabilities to the 3D module vector
+    for(int i = 0; i < 28; i++) {
+        for (int j = 0; j < 28; j++) {
+            module[classification][i][j] = cell_occurance_counter[i][j];
+        }
+    }
 }
 
 void priors(int classification, vector <pair<int, Feature_Vector>> images) {
@@ -142,19 +147,19 @@ int calculate_posterior_probability(Feature_Vector input_feature, vector<double>
     return max_class;
 }
 
-void Training_Module::read_module(istream &ins) {
+void read_module(istream &ins) {
     for (int k = 0; k < 10; k++) {
         for (int i = 0; i < 28; i++) {
             for (int j = 0; j < 28; j++) {
                 double input;
                 ins >> input;
-                module[k][i][j].push_back(input);
+                module[k][i][j] = input;
             }
         }
     }
 }
 
-void Training_Module::write_module(ostream &outs) {
+void write_module(ostream &outs) {
     outs << "{";
     for (int k = 0; k < 10; k++) {
         outs << k << ": {";
