@@ -6,13 +6,14 @@
 #define NAIVEBAYES_ASHAAGRAWAL07_FEATURE_VECTOR_H
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 class Feature_Vector {
 
 private:
-    vector <std::vector<bool>> feature;
+    vector <vector<bool>> feature;
 public:
 
     /**
@@ -27,12 +28,19 @@ public:
      * @param j the column
      * @return the boolean value stored there
      */
-    bool get_Value(int i, int j);
+    bool get_value(int i, int j);
+
+    /**
+     *
+     * @return the size of the feature vector
+     */
+    int get_size();
     /**
      * Basically takes in the characters and converts it into booleans: 0 if whitespace, 1 otherwise
      * @param ins the input stream that the function will read and turn into a 28x28 boolean vector
+     * @return a vector of vector of bools (basically the feature vector for the image)
      */
-    void read(istream& ins);
+    vector<vector<bool>> read(istream& ins);
 
     /**
      * @param outs the out stream the function will use to output the Feature_Vector

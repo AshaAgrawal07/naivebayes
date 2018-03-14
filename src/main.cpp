@@ -12,12 +12,12 @@ using namespace std;
 int main() {
     //train the stuff
     //train will call search (creates 3D vector) and priors (which computes #times classification/total)
-    std::vector<std::vector<std::vector<double>>> images;
-    std::istream ins;
+    vector<vector<vector<double>>> images;
+    ifstream ins;
     images = images.train();
 
     //put images into a file
-    std::ofstream model_file ("training model");
+    ofstream model_file ("training model");
     model_file << images << std::endl;
     model_file.close();
 

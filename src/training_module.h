@@ -9,9 +9,9 @@
 #include "feature_vector.h"
 
 class Training_Module {
-    std::vector<std::vector<std::vector>> probabilities;
-    std::vector<std::vector<std::vector>> module;
-    std::vector<double> prior;
+    vector<vector<vector<double>>> probabilities;
+    vector<vector<vector<double>>> module;
+    vector<double> prior;
 
 private:
     /**
@@ -51,7 +51,7 @@ public:
      * be made through the read_input function
      * @return the 3D vector with the probabilities
      */
-    std::vector<std::vector<std::vector<>>> train(vector<std::pair<int, Feature_Vector>> images);
+    std::vector<std::vector<std::vector<double>>> train(vector<std::pair<int, Feature_Vector>> images);
 
     /**
      * calculates the posterior probabilities using logarithms
@@ -65,7 +65,7 @@ public:
      * reads the module from the input stream as a 10x28x28 3D vector
      * @param ins the input stream
      */
-    void read_module(istream& ins);
+    void read_module(ifstream& ins);
 
     /**
      * outputs the module in 3D vector format
@@ -80,7 +80,7 @@ public:
  * @param model the module in question
  * @return the input stream
  */
-istream& operator >> (istream& ins, Training_Module model);
+ifstream& operator >> (istream& ins, Training_Module model);
 
 /**
  * operator overloading of <<

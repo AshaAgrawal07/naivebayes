@@ -4,14 +4,15 @@
 
 #include "feature_vector.h"
 #include <iostream>
+#include <vector>
 
-vector <std::vector<bool>> feature;
+vector <vector<bool>> feature;
 
 Feature_Vector::Feature_Vector() {
-    std::vector<std::vector<bool>> feature;
+    vector<vector<bool>> feature;
 }
 
-void Feature_Vector::read(std::istream& ins) {
+vector<vector<bool>> read(std::istream& ins) {
     for (int i = 0; i < 28; i++) {
         for (int j = 0; j < 28; j++) {
             bool input;
@@ -25,10 +26,15 @@ void Feature_Vector::read(std::istream& ins) {
             feature[i].push_back(input);
         }
     }
+    return feature;
 }
 
-bool get_Value(int i, int j) {
+bool get_value(int i, int j) {
     return feature[i][j];
+}
+
+int get_size() {
+    return feature.size();
 }
 
 void Feature_Vector::write(std::ostream& outs) {
