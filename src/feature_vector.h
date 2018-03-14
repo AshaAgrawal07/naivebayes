@@ -12,9 +12,8 @@ using namespace std;
 
 class Feature_Vector {
 
-private:
-    vector <vector<bool>> feature;
 public:
+    vector <vector<bool>> feature;
 
     /**
      * creates an empty 28X28 feature_vector

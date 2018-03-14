@@ -11,7 +11,7 @@
 
 using namespace std;
 
-vector<vector<vector<int>>> module;
+vector<vector<vector<double>>> module;
 vector<double> prior;
 
 ifstream ins;

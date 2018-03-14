@@ -10,14 +10,13 @@
 
 class Training_Module {
 
+
+public:
     //10x28x28 vector of probabilities based on the training data
     vector<vector<vector<double>>> module;
 
     //of size 10; probability of each classification based on the training data
     vector<double> prior;
-
-private:
-public:
 
     /**
      * reads the files and helps in training or testing
