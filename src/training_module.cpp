@@ -86,7 +86,7 @@ void search(int classification, vector <pair<int, Feature_Vector>> images) {
     //now that i have gone through each Feature_Vector with the specified classification, i want to compute the
     // probability of each cell
     //i will change the value of k by myself
-    double k = 0.000000000001;
+    double k = 0.001;
     for (int i = 0; i < 28; i++) {
         for (int j = 0; j < 28; j++) {
             //using given formula: (k + #times Fi,j = f for class c)/(2k + Total # of training examples of class c)
