@@ -12,7 +12,7 @@ Feature_Vector::Feature_Vector() {
     vector<vector<bool>> feature;
 }
 
-vector<vector<bool>> read(std::istream& ins) {
+vector<vector<bool>> read(istream& ins) {
     for (int i = 0; i < 28; i++) {
         for (int j = 0; j < 28; j++) {
             bool input;
@@ -30,7 +30,10 @@ vector<vector<bool>> read(std::istream& ins) {
 }
 
 bool get_value(int i, int j) {
-    return feature[i][j];
+    if (i < feature.size() && j < feature.size() && i > 0 && j > 0) {
+        return feature[i][j];
+    }
+    return false;
 }
 
 int get_size() {
