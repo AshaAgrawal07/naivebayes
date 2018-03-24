@@ -6,9 +6,10 @@
 #define NAIVEBAYES_TRAINING_DATA_H
 
 #include <vector>
+#include <pair>
 #include "feature_vector.h"
 
-class Training_Module {
+class TrainingModule {
 
 
 public:
@@ -23,10 +24,10 @@ public:
      * it depends on the file that is inputted
      * it will output an error message if the file does not exist/cannot be accessed
      *
-     * it will create a vector of pairs of a Feature_Vectors with its corresponding classification as an int
+     * it will create a vector of pairs of a FeatureVectors with its corresponding classification as an int
      * it is basically the helper method for train() when it is called in main.cpp
      */
-    vector<std::pair<int, Feature_Vector>> read_file_input();
+    vector<pair<int, FeatureVector>> read_file_input();
 
     /**
      * is a helper method for train()
@@ -35,7 +36,7 @@ public:
      * @param classification the specific number 0-9 that we want to compute the probabilities for
      * @param images the vector of images that we have stored
      */
-    void search(int classification, vector <std::pair<int, Feature_Vector>> images);
+    void search (int classification, vector <std::pair<int, Feature_Vector>> images);
 
     /**
      *
@@ -43,7 +44,7 @@ public:
      * @param images the vector of images that we have stored
      * @return the probability of a specific class appearing in the entire file
      */
-    void priors(int classification, vector <std::pair<int, Feature_Vector>> images);
+    void priors (int classification, vector <std::pair<int, FeatureVector>> images);
 
     /**
      * creates a 3D vector (a vector of vectors of vectors) with the intended size of 10x28x28 that will store the probabilities
@@ -53,27 +54,27 @@ public:
      * be made through the read_input function
      * @return the 3D vector with the probabilities
      */
-    vector<vector<vector<double>>> train(vector<std::pair<int, Feature_Vector>> images);
+    vector<vector<vector<double>>> train (vector <std::pair<int, FeatureVector>> images);
 
     /**
      * calculates the posterior probabilities using logarithms
-     * @param input_feature the Feature_Vector (for test images) we want to fine the classification for
+     * @param input_feature the FeatureVector (for test images) we want to fine the classification for
      * @param prior the vector of P(classification)
      * @return int, the most probable classification for the given Feature_Vector
      */
-    int calculate_posterior_probability(Feature_Vector input_feature, std::vector<double> prior);
+    int calculate_posterior_probability(FeatureVector input_feature, vector<double> prior);
 
     /**
      * reads the module from the input stream as a 10x28x28 3D vector
      * @param ins the input stream
      */
-    void read_module(ifstream& ins);
+    void read_module (ifstream& ins);
 
     /**
      * outputs the module in 3D vector format
      * @param outs the output stream
      */
-    void write_module(ostream& outs);
+    void write_module (ostream& outs);
 };
 
 /**

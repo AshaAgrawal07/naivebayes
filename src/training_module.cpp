@@ -8,15 +8,17 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <vector>
+#include <pair>
 
 using namespace std;
 
-vector<vector<vector<double>>> module;
+vector<vector<vector<double>> module;
 vector<double> prior;
 
 ifstream ins;
 
-vector<pair<int, Feature_Vector>> read_file_input() {
+vector<pair<int, FeatureVector>> read_file_input() {
     string file_data_name;
     string file_answers_name;
 
@@ -37,12 +39,12 @@ vector<pair<int, Feature_Vector>> read_file_input() {
     }
 
     //at this point, i know that files will be read
-    //now creating a vector of pairs that contains a Feature_Vector and its corresponding classification (int)
-    vector<pair<int, Feature_Vector>> images;
+    //now creating a vector of pairs that contains a FeatureVector and its corresponding classification (int)
+    vector<pair<int, FeatureVector>> images;
     int classification;
     while (training_data_file) {
-        Feature_Vector feature;
-        pair<int, Feature_Vector> image;
+        FeatureVector feature;
+        pair<int, FeatureVector> image;
         image = make_pair(classification, feature.read(ins));
         images.push_back(image);
     }
@@ -51,28 +53,28 @@ vector<pair<int, Feature_Vector>> read_file_input() {
     return images;
 }
 
-vector<vector<vector<double>>>train(vector<pair<int, Feature_Vector>> images) {
+vector<vector<vector<double>> train (vector<pair<int, FeatureVector>> images) {
     Training_Module trainer;
-    //go through images 10 times to find the all of the Frequency_Vectors with the specific classification
-    for (int i = 0; i < 10; i++) {
+    //go through images 10 times to find the all of the FrequencyVectors with the specific classification
+    for(int i = 0; i < 10; i++) {
         trainer.search(i, images);
         trainer.priors(i, images);
     }
     return trainer.write_module(ostream::out&);
 }
 
-void search(int classification, vector <pair<int, Feature_Vector>> images) {
+void search (int classification, vector <pair<int, FeatureVector>> images) {
     int classification_occurance_counter = 0;
     vector <vector<double>> cell_occurance_counter;
 
-    //go through each Feature_Vector and Classification pair
+    //go through each FeatureVector and Classification pair
     for (int i = 0; i < images.size(); i++) {
 
         //see if the classification of the pair is the one we are searching for
         if (images[i].first == classification) {
             classification_occurance_counter++;
 
-            //now go through the entire Feature_Vector and get the number of occurances of a '1' for a specific cell
+            //now go through the entire FeatureVector and get the number of occurances of a '1' for a specific cell
             for (int j = 0; j < images[i].second.get_size(); j++) {
                 for (int k = 0; k < images[i].second.get_size(); k++) {
                     if (images[i].second.get_value(j, k) == 1) {
@@ -103,7 +105,7 @@ void search(int classification, vector <pair<int, Feature_Vector>> images) {
     }
 }
 
-void priors(int classification, vector <pair<int, Feature_Vector>> images) {
+void priors (int classification, vector <pair<int, FeatureVector>> images) {
     double classification_occurance_counter = 0;
 
     //go through each Feature_Vector and Classification pair
@@ -117,7 +119,7 @@ void priors(int classification, vector <pair<int, Feature_Vector>> images) {
     prior.push_back(classification_occurance_counter / images.size());
 }
 
-int calculate_posterior_probability(Feature_Vector input_feature, vector<double> prior) {
+int calculate_posterior_probability (Feature_Vector input_feature, vector<double> prior) {
     std::vector<std::pair<int, double>> posteriors;
     double posterior_probability = 0;
     for (int i = 0; i < 10; i++) {
@@ -147,7 +149,7 @@ int calculate_posterior_probability(Feature_Vector input_feature, vector<double>
     return max_class;
 }
 
-void read_module(istream &ins) {
+void read_module (istream &ins) {
     for (int k = 0; k < 10; k++) {
         for (int i = 0; i < 28; i++) {
             for (int j = 0; j < 28; j++) {
@@ -159,7 +161,7 @@ void read_module(istream &ins) {
     }
 }
 
-void write_module(ostream &outs) {
+void write_module (ostream &outs) {
     outs << "{";
     for (int k = 0; k < 10; k++) {
         outs << k << ": {";
@@ -184,12 +186,12 @@ void write_module(ostream &outs) {
     outs << "}";
 }
 
-istream &operator>>(istream &ins, Training_Module& model) {
+istream &operator >> (istream &ins, TrainingModule& model) {
     model.read_module(ins);
     return ins;
 }
 
-ostream &operator<<(ostream &outs, Training_Module& model) {
+ostream &operator << (ostream &outs, TrainingModule& model) {
     model.write_module(outs);
     return outs;
 }

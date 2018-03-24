@@ -10,16 +10,16 @@
 
 using namespace std;
 
-class Feature_Vector {
+class FeatureVector {
 
 public:
-    vector <vector<bool>> feature;
+    vector<vector<bool>> feature;
 
     /**
      * creates an empty 28X28 feature_vector
      * is the constructor
      */
-    Feature_Vector();
+    FeatureVector();
 
     /**
      *
@@ -27,7 +27,7 @@ public:
      * @param j the column
      * @return the boolean value stored there
      */
-    bool get_value(int i, int j);
+    bool get_value (int i, int j);
 
     /**
      *
@@ -44,23 +44,23 @@ public:
     /**
      * @param outs the out stream the function will use to output the Feature_Vector
      */
-    void write(ostream& outs);
+    void write (ostream& outs);
 
 };
 /**
  * overloading operator >>
  * @param ins the input stream
- * @param featurev the feature vector in question
+ * @param featurevector the feature vector in question
  * @return the input stream
  */
-istream& operator >> (istream& ins, Feature_Vector& featurev);
+istream& operator >> (istream& ins, Feature_Vector& featurevector);
 
 /**
  * overloading operator <<
  * @param outs the output stream
- * @param featurev the feature vector in question
+ * @param featurevector the feature vector in question
  * @return the output stream
  */
-ostream& operator << (ostream& outs, Feature_Vector featurev);
+ostream& operator << (ostream& outs, Feature_Vector featurevector);
 
 #endif //NAIVEBAYES_ASHAAGRAWAL07_FEATURE_VECTOR_H
