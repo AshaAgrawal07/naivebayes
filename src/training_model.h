@@ -9,12 +9,12 @@
 #include <pair>
 #include "feature_vector.h"
 
-class TrainingModule {
+class TrainingModel {
 
 
 public:
     //10x28x28 vector of probabilities based on the training data
-    vector<vector<vector<double>>> module;
+    vector<vector<vector<double>>> model;
 
     //of size 10; probability of each classification based on the training data
     vector<double> prior;
@@ -47,7 +47,8 @@ public:
     void priors (int classification, vector <std::pair<int, FeatureVector>> images);
 
     /**
-     * creates a 3D vector (a vector of vectors of vectors) with the intended size of 10x28x28 that will store the probabilities
+     * creates a 3D vector (a vector of vectors of vectors) with the intended size of 10x28x28 that will store the
+     * probabilities
      * goes through the elements in the vectors for each classifications and computes the probabilities using the
      * naive-bayes formula that was given
      * @param images a vector of pairs of a Feature_Vector and its corresponding classification as an int- which will
@@ -65,31 +66,31 @@ public:
     int calculate_posterior_probability(FeatureVector input_feature, vector<double> prior);
 
     /**
-     * reads the module from the input stream as a 10x28x28 3D vector
+     * reads the model from the input stream as a 10x28x28 3D vector
      * @param ins the input stream
      */
-    void read_module (ifstream& ins);
+    void read_model (ifstream& ins);
 
     /**
-     * outputs the module in 3D vector format
+     * outputs the model in 3D vector format
      * @param outs the output stream
      */
-    void write_module (ostream& outs);
+    void write_model (ostream& outs);
 };
 
 /**
  * operator overloading of >>
  * @param ins the input stream
- * @param model the module in question
+ * @param model the model in question
  * @return the input stream
  */
-ifstream& operator >> (istream& ins, Training_Module model);
+ifstream& operator >> (istream& ins, Training_Model model);
 
 /**
  * operator overloading of <<
  * @param outs the output stream
- * @param model the module in question
+ * @param model the model in question
  * @return the output stream
  */
-ostream& operator << (ostream& outs, Training_Module& model);
+ostream& operator << (ostream& outs, Training_Model& model);
 #endif //NAIVEBAYES_TRAINING_DATA_H

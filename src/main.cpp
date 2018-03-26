@@ -1,7 +1,7 @@
 //
 // Created by Asha Agrawal on 3/13/2018.
 //
-#include "training_module.h"
+#include "training_model.h"
 #include "feature_vector.h"
 #include <fstream>
 #include <iostream>
@@ -12,8 +12,8 @@ using namespace std;
 int main() {
     //train the stuff
     //train will call search (creates 3D vector) and priors (which computes #times classification/total)
-    vector<pair<int, Feature_Vector>> image;
-    Training_Module training_images;
+    vector<pair<int, FeatureVector>> image;
+    TrainingModel training_images;
     image = training_images.read_file_input();
     ifstream ins;
     training_images.train(image);

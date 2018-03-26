@@ -2,7 +2,7 @@
 // Created by Asha Agrawal on 3/12/2018.
 //
 
-#include "training_module.h"
+#include "training_model.h"
 #include "feature_vector.h"
 #include <fstream>
 #include <iostream>
@@ -13,25 +13,25 @@
 
 using namespace std;
 
-vector<vector<vector<double>> module;
+//vector<vector<vector<double>>> model;
 vector<double> prior;
 
 ifstream ins;
 
 vector<pair<int, FeatureVector>> read_file_input() {
-    string file_data_name;
-    string file_answers_name;
+    string data_filename;
+    string labels_filename;
 
     ifstream training_data_file;
     ifstream training_answers_file;
 
     cout << "Input data file to be read: " << endl;
-    cin >> file_data_name;
+    cin >> data_filename;
     cout << "Input answer file to be read: " << endl;
-    cin >> file_answers_name;
+    cin >> labels_filename;
 
-    training_data_file.open(file_data_name);
-    training_answers_file.open(file_answers_name);
+    training_data_file.open(data_filename);
+    training_answers_file.open(labels_filename);
     //check that file is valid
     if (!training_data_file.is_open() || !training_answers_file.is_open()) {
         cout << "Cannot open file" << endl;
@@ -42,7 +42,7 @@ vector<pair<int, FeatureVector>> read_file_input() {
     //now creating a vector of pairs that contains a FeatureVector and its corresponding classification (int)
     vector<pair<int, FeatureVector>> images;
     int classification;
-    while (training_data_file) {
+    while (training_data_file.hasNext()) {
         FeatureVector feature;
         pair<int, FeatureVector> image;
         image = make_pair(classification, feature.read(ins));
@@ -53,14 +53,14 @@ vector<pair<int, FeatureVector>> read_file_input() {
     return images;
 }
 
-vector<vector<vector<double>> train (vector<pair<int, FeatureVector>> images) {
-    Training_Module trainer;
+vector<vector<vector<double>> train_label_data_model (vector<pair<int, FeatureVector>> images) {
+    Training_Model trainer;
     //go through images 10 times to find the all of the FrequencyVectors with the specific classification
     for(int i = 0; i < 10; i++) {
         trainer.search(i, images);
         trainer.priors(i, images);
     }
-    return trainer.write_module(ostream::out&);
+    return trainer.write_model(ostream::out&);
 }
 
 void search (int classification, vector <pair<int, FeatureVector>> images) {
@@ -97,10 +97,10 @@ void search (int classification, vector <pair<int, FeatureVector>> images) {
             cell_occurance_counter[i][j] = computed_probability;
         }
     }
-    //add these freshly computed probabilities to the 3D module vector
+    //add these freshly computed probabilities to the 3D model vector
     for(int i = 0; i < 28; i++) {
         for (int j = 0; j < 28; j++) {
-            module[classification][i][j] = cell_occurance_counter[i][j];
+            model[classification][i][j] = cell_occurance_counter[i][j];
         }
     }
 }
@@ -126,7 +126,7 @@ int calculate_posterior_probability (Feature_Vector input_feature, vector<double
         posterior_probability += prior[i];
         for (int j = 0; j<28; j++) {
             for (int k = 0; k < 28; k++) {
-                posterior_probability += log((input_feature.get_value(j, k))/module[i][j][k]);
+                posterior_probability += log((input_feature.get_value(j, k))/model[i][j][k]);
             }
         }
         pair<int, double> pairs;
@@ -149,26 +149,26 @@ int calculate_posterior_probability (Feature_Vector input_feature, vector<double
     return max_class;
 }
 
-void read_module (istream &ins) {
+void read_model (istream &ins) {
     for (int k = 0; k < 10; k++) {
         for (int i = 0; i < 28; i++) {
             for (int j = 0; j < 28; j++) {
                 double input;
                 ins >> input;
-                module[k][i][j] = input;
+                model[k][i][j] = input;
             }
         }
     }
 }
 
-void write_module (ostream &outs) {
+void write_model (ostream &outs) {
     outs << "{";
     for (int k = 0; k < 10; k++) {
         outs << k << ": {";
         for (int i = 0; i < 28; i++) {
             outs << "{";
             for (int j = 0; j < 28; j++) {
-                outs << module[k][i][j];
+                outs << model[k][i][j];
                 if (j != 27) {
                     outs << " ";
                 }
@@ -186,13 +186,13 @@ void write_module (ostream &outs) {
     outs << "}";
 }
 
-istream &operator >> (istream &ins, TrainingModule& model) {
-    model.read_module(ins);
+istream &operator >> (istream &ins, TrainingModel& model) {
+    model.read_model(ins);
     return ins;
 }
 
-ostream &operator << (ostream &outs, TrainingModule& model) {
-    model.write_module(outs);
+ostream &operator << (ostream &outs, TrainingModel& model) {
+    model.write_model(outs);
     return outs;
 }
 
