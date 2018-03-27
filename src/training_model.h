@@ -14,10 +14,7 @@ class TrainingModel {
 
 public:
     //10x28x28 vector of probabilities based on the training data
-    vector<vector<vector<double>>> model;
-
-    //of size 10; probability of each classification based on the training data
-    vector<double> prior;
+    //vector<vector<vector<double>>> model;
 
     /**
      * reads the files and helps in training or testing
@@ -32,19 +29,19 @@ public:
     /**
      * is a helper method for train()
      * given a specific classification, search will go through all of the images and compute the probabilities for that
-     * classification and then compute the probabilities for each cell using the given laplace's smooting factor
+     * classification and then compute the probabilities for each cell using the given laplace's smoothing factor
      * @param classification the specific number 0-9 that we want to compute the probabilities for
      * @param images the vector of images that we have stored
+     * @return a vector of vector of doubles (basically the computed probabilities for each cell for the particular
+     * classification)
      */
-    void search (int classification, vector <std::pair<int, Feature_Vector>> images);
+    vector<vector<double>> search (int classification, vector <std::pair<int, Feature_Vector>> images);
 
     /**
-     *
-     * @param classification the specific number 0-9 that we want to count the occurances for from given file
-     * @param images the vector of images that we have stored
-     * @return the probability of a specific class appearing in the entire file
+     * @param images the vector of images that we have stored along with their respective classifications
+     * @return the probabilities of each specific class appearing in the entire file in a vector
      */
-    void priors (int classification, vector <std::pair<int, FeatureVector>> images);
+    vector<double> priors (vector <std::pair<int, FeatureVector>> images);
 
     /**
      * creates a 3D vector (a vector of vectors of vectors) with the intended size of 10x28x28 that will store the
@@ -55,7 +52,7 @@ public:
      * be made through the read_input function
      * @return the 3D vector with the probabilities
      */
-    vector<vector<vector<double>>> train (vector <std::pair<int, FeatureVector>> images);
+    vector<vector<vector<double>> train_data_model (vector <std::pair<int, FeatureVector>> images);
 
     /**
      * calculates the posterior probabilities using logarithms
@@ -84,7 +81,7 @@ public:
  * @param model the model in question
  * @return the input stream
  */
-ifstream& operator >> (istream& ins, Training_Model model);
+ifstream& operator >> (istream& ins, Training_Model& model);
 
 /**
  * operator overloading of <<

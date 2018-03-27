@@ -14,7 +14,7 @@
 using namespace std;
 
 //vector<vector<vector<double>>> model;
-vector<double> prior;
+
 
 ifstream ins;
 
@@ -49,36 +49,39 @@ vector<pair<int, FeatureVector>> read_file_input() {
         images.push_back(image);
     }
     training_data_file.close();
+    training_answers_file.close();
     cout << "Reading of training images complete" << endl;
     return images;
 }
 
-vector<vector<vector<double>> train_label_data_model (vector<pair<int, FeatureVector>> images) {
+vector<vector<vector<double>> train_data_model (vector<pair<int, FeatureVector>> images) {
     Training_Model trainer;
+    vector<vector<vector<double>> model;
     //go through images 10 times to find the all of the FrequencyVectors with the specific classification
     for(int i = 0; i < 10; i++) {
-        trainer.search(i, images);
-        trainer.priors(i, images);
+        model.push_back(trainer.search(i, images));
     }
-    return trainer.write_model(ostream::out&);
+    //vector<double> prior = trainer.priors(i, images);
+    return trainer.write_model(ostream::out& cout);
 }
 
-void search (int classification, vector <pair<int, FeatureVector>> images) {
-    int classification_occurance_counter = 0;
-    vector <vector<double>> cell_occurance_counter;
+vector<vector<double>> search (int classification, vector <pair<int, FeatureVector>> images) {
+    int classification_occurrence_counter = 0;
+    vector <vector<double>> cell_occurrence_counter;
+    vector<vector<vector<double>> model;
 
     //go through each FeatureVector and Classification pair
     for (int i = 0; i < images.size(); i++) {
 
         //see if the classification of the pair is the one we are searching for
         if (images[i].first == classification) {
-            classification_occurance_counter++;
+            classification_occurrence_counter++;
 
-            //now go through the entire FeatureVector and get the number of occurances of a '1' for a specific cell
+            //now go through the entire FeatureVector and get the number of occurrences of a '1' for a specific cell
             for (int j = 0; j < images[i].second.get_size(); j++) {
                 for (int k = 0; k < images[i].second.get_size(); k++) {
                     if (images[i].second.get_value(j, k) == 1) {
-                        cell_occurance_counter[j][k]++;
+                        cell_occurrence_counter[j][k]++;
                     }
                 }
             }
@@ -87,36 +90,41 @@ void search (int classification, vector <pair<int, FeatureVector>> images) {
 
     //now that i have gone through each Feature_Vector with the specified classification, i want to compute the
     // probability of each cell
-    //i will change the value of k by myself
+    //i will change the value of k manually
     double k = 0.001;
     for (int i = 0; i < 28; i++) {
         for (int j = 0; j < 28; j++) {
             //using given formula: (k + #times Fi,j = f for class c)/(2k + Total # of training examples of class c)
             double computed_probability =
-                    (k + cell_occurance_counter[i][j]) / ((2 * k) + classification_occurance_counter);
-            cell_occurance_counter[i][j] = computed_probability;
+                    (k + cell_occurrence_counter[i][j]) / ((2 * k) + classification_occurrence_counter);
+            cell_occurrence_counter[i][j] = computed_probability;
         }
     }
     //add these freshly computed probabilities to the 3D model vector
     for(int i = 0; i < 28; i++) {
         for (int j = 0; j < 28; j++) {
-            model[classification][i][j] = cell_occurance_counter[i][j];
+            model[classification][i][j] = cell_occurrence_counter[i][j];
         }
     }
 }
 
-void priors (int classification, vector <pair<int, FeatureVector>> images) {
-    double classification_occurance_counter = 0;
+vector<double> priors (vector <pair<int, FeatureVector>> images) {
+    double classification_occurrence_counter = 0;
+    //intended size of 10 by the end of this function
+    vector<double> prior;
 
-    //go through each Feature_Vector and Classification pair
-    for (int i = 0; i < images.size(); i++) {
+    //go through each classification
+    for(int classification = 0; classification < 10; classification++) {
+        //go through each Feature_Vector and Classification pair
+        for (int i = 0; i < images.size(); i++) {
 
-        //see if the classification of the pair is the one we are searching for
-        if (images[i].first == classification) {
-            classification_occurance_counter++;
+            //see if the classification of the pair is the one we are searching for
+            if (images[i].first == classification) {
+                classification_occurrence_counter++;
+            }
         }
+        prior.push_back(classification_occurrence_counter / images.size());
     }
-    prior.push_back(classification_occurance_counter / images.size());
 }
 
 int calculate_posterior_probability (Feature_Vector input_feature, vector<double> prior) {
@@ -150,6 +158,7 @@ int calculate_posterior_probability (Feature_Vector input_feature, vector<double
 }
 
 void read_model (istream &ins) {
+    vector<vector<vector<double>>> model;
     for (int k = 0; k < 10; k++) {
         for (int i = 0; i < 28; i++) {
             for (int j = 0; j < 28; j++) {
