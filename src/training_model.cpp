@@ -12,6 +12,7 @@
 
 using namespace std;
 
+//10x28x28 vector that stores the probabilties of markings occurring at specific cells for each classification
 vector<vector<vector<double>>> model;
 vector<double> prior;
 
@@ -74,8 +75,8 @@ vector<vector<double>> search (int classification, vector <pair<int, FeatureVect
             classification_occurrence_counter++;
 
             //now go through the entire FeatureVector and get the number of occurrences of a '1' for a specific cell
-            for (int j = 0; j < 28; j++) {
-                for (int k = 0; k < 28; k++) {
+            for (int j = 0; j < images[i].second.get_size(); j++) {
+                for (int k = 0; k < images[i].second.get_size(); k++) {
                     if (images[i].second.get_value(j, k) == 1) {
                         cell_occurrence_counter[j][k]++;
                     }

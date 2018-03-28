@@ -37,6 +37,10 @@ bool get_value (int i, int j) {
     }
 }
 
+int get_size(){
+    return feature.size();
+}
+
 void write (ostream& outs) {
     outs << "{";
     for (int i = 0; i < 28; i++) {
