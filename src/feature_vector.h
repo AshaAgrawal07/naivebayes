@@ -47,6 +47,7 @@ public:
     void write (ostream& outs);
 
 };
+
 /**
  * overloading operator >>
  * @param ins the input stream

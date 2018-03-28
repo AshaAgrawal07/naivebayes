@@ -11,7 +11,7 @@ using namespace std;
 vector<vector<bool>> feature;
 
 FeatureVector::FeatureVector() {
-    vector<vector<bool>> feature;
+    vector<vector<bool>> featurevector;
 }
 
 vector<vector<bool>> read (istream& ins) {
@@ -37,11 +37,7 @@ bool get_value (int i, int j) {
     }
 }
 
-int get_size() {
-    return feature.size();
-}
-
-void FeatureVector::write (ostream& outs) {
+void write (ostream& outs) {
     outs << "{";
     for (int i = 0; i < 28; i++) {
         outs << "{";

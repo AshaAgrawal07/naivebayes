@@ -13,6 +13,7 @@
 using namespace std;
 
 vector<vector<vector<double>>> model;
+vector<double> prior;
 
 vector<pair<int, FeatureVector>> read_file_input() {
     string data_filename;
@@ -101,7 +102,6 @@ vector<vector<double>> search (int classification, vector <pair<int, FeatureVect
 vector<double> priors (vector<pair<int, FeatureVector>> images) {
     double classification_occurrence_counter = 0;
     //intended size of 10 by the end of this function
-    vector<double> prior;
 
     //go through each classification
     for(int classification = 0; classification < 10; classification++) {

@@ -16,7 +16,7 @@ int main() {
     TrainingModel training_images;
     image = training_images.read_file_input();
     ifstream ins;
-    training_images.train(image);
+    training_images.train_data_model(image);
 
     //put images into a file
     ofstream model_file ("training model");
@@ -50,8 +50,8 @@ int main() {
 
     vector<vector<int>> confusion_matrix;
     while(!test_data_file.eof()) {
-        Feature_Vector feature;
-        pair<int, Feature_Vector> image;
+        FeatureVector feature;
+        pair<int, FeatureVector> image;
         feature.read(ins);
         int class_identified = training_images.calculate_posterior_probability(feature, training_images.prior);
         int real_class;

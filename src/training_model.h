@@ -12,6 +12,8 @@ class TrainingModel {
 
 
 public:
+    vector<vector<vector<double>>> model;
+    vector<double> prior;
 
     /**
      * reads the files and helps in training or testing
