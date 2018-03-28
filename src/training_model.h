@@ -6,15 +6,12 @@
 #define NAIVEBAYES_TRAINING_DATA_H
 
 #include <vector>
-#include <pair>
 #include "feature_vector.h"
 
 class TrainingModel {
 
 
 public:
-    //10x28x28 vector of probabilities based on the training data
-    //vector<vector<vector<double>>> model;
 
     /**
      * reads the files and helps in training or testing
@@ -35,13 +32,13 @@ public:
      * @return a vector of vector of doubles (basically the computed probabilities for each cell for the particular
      * classification)
      */
-    vector<vector<double>> search (int classification, vector <std::pair<int, Feature_Vector>> images);
+    vector<vector<double>> search (int classification, vector <std::pair<int, FeatureVector>> images);
 
     /**
      * @param images the vector of images that we have stored along with their respective classifications
      * @return the probabilities of each specific class appearing in the entire file in a vector
      */
-    vector<double> priors (vector <std::pair<int, FeatureVector>> images);
+    vector<double> priors (vector<pair<int, FeatureVector>> images);
 
     /**
      * creates a 3D vector (a vector of vectors of vectors) with the intended size of 10x28x28 that will store the
@@ -52,7 +49,7 @@ public:
      * be made through the read_input function
      * @return the 3D vector with the probabilities
      */
-    vector<vector<vector<double>> train_data_model (vector <std::pair<int, FeatureVector>> images);
+    vector<vector<vector<double>>> train_data_model (vector<pair<int, FeatureVector>> images);
 
     /**
      * calculates the posterior probabilities using logarithms
@@ -81,7 +78,7 @@ public:
  * @param model the model in question
  * @return the input stream
  */
-ifstream& operator >> (istream& ins, Training_Model& model);
+ifstream& operator >> (ifstream& ins, TrainingModel& models);
 
 /**
  * operator overloading of <<
@@ -89,5 +86,5 @@ ifstream& operator >> (istream& ins, Training_Model& model);
  * @param model the model in question
  * @return the output stream
  */
-ostream& operator << (ostream& outs, Training_Model& model);
+ostream& operator << (ostream& outs, TrainingModel& models);
 #endif //NAIVEBAYES_TRAINING_DATA_H

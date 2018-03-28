@@ -6,6 +6,8 @@
 #include <iostream>
 #include <vector>
 
+using namespace std;
+
 vector<vector<bool>> feature;
 
 FeatureVector::FeatureVector() {
@@ -39,7 +41,7 @@ int get_size() {
     return feature.size();
 }
 
-void FeatureVector::write (std::ostream& outs) {
+void FeatureVector::write (ostream& outs) {
     outs << "{";
     for (int i = 0; i < 28; i++) {
         outs << "{";
@@ -54,13 +56,13 @@ void FeatureVector::write (std::ostream& outs) {
     outs << "}";
 }
 
-istream& operator >> (std::istream& ins,  FeatureVector& feature_vector)
+istream &operator >> (istream& ins,  FeatureVector &feature_vector)
 {
     feature_vector.read(ins);
     return ins;
 }
 
-ostream& operator << (std::ostream& outs, FeatureVector& feature_vector)
+ostream &operator << (ostream& outs, FeatureVector &feature_vector)
 {
     feature_vector.write(outs);
     return outs;

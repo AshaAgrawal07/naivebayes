@@ -53,7 +53,7 @@ public:
  * @param featurevector the feature vector in question
  * @return the input stream
  */
-istream& operator >> (istream& ins, Feature_Vector& featurevector);
+istream& operator >> (istream& ins, FeatureVector &featurevector);
 
 /**
  * overloading operator <<
@@ -61,6 +61,6 @@ istream& operator >> (istream& ins, Feature_Vector& featurevector);
  * @param featurevector the feature vector in question
  * @return the output stream
  */
-ostream& operator << (ostream& outs, Feature_Vector featurevector);
+ostream& operator << (ostream& outs, FeatureVector &featurevector);
 
 #endif //NAIVEBAYES_ASHAAGRAWAL07_FEATURE_VECTOR_H

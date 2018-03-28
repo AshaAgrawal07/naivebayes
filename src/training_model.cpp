@@ -9,14 +9,10 @@
 #include <iomanip>
 #include <cmath>
 #include <vector>
-#include <pair>
 
 using namespace std;
 
-//vector<vector<vector<double>>> model;
-
-
-ifstream ins;
+vector<vector<vector<double>>> model;
 
 vector<pair<int, FeatureVector>> read_file_input() {
     string data_filename;
@@ -42,10 +38,10 @@ vector<pair<int, FeatureVector>> read_file_input() {
     //now creating a vector of pairs that contains a FeatureVector and its corresponding classification (int)
     vector<pair<int, FeatureVector>> images;
     int classification;
-    while (training_data_file.hasNext()) {
+    while (training_data_file.peek() != training_data_file.eof()) {
         FeatureVector feature;
         pair<int, FeatureVector> image;
-        image = make_pair(classification, feature.read(ins));
+        image = make_pair(classification, feature.read(cin));
         images.push_back(image);
     }
     training_data_file.close();
@@ -54,21 +50,20 @@ vector<pair<int, FeatureVector>> read_file_input() {
     return images;
 }
 
-vector<vector<vector<double>> train_data_model (vector<pair<int, FeatureVector>> images) {
-    Training_Model trainer;
-    vector<vector<vector<double>> model;
+vector<vector<vector<double>>> train_data_model (vector<pair<int, FeatureVector>> images) {
+    TrainingModel trainer;
     //go through images 10 times to find the all of the FrequencyVectors with the specific classification
     for(int i = 0; i < 10; i++) {
         model.push_back(trainer.search(i, images));
     }
-    //vector<double> prior = trainer.priors(i, images);
-    return trainer.write_model(ostream::out& cout);
+    trainer.write_model(cout);
+    return model;
 }
 
 vector<vector<double>> search (int classification, vector <pair<int, FeatureVector>> images) {
     int classification_occurrence_counter = 0;
     vector <vector<double>> cell_occurrence_counter;
-    vector<vector<vector<double>> model;
+    vector<vector<double>> classification_cell_probabilities;
 
     //go through each FeatureVector and Classification pair
     for (int i = 0; i < images.size(); i++) {
@@ -78,8 +73,8 @@ vector<vector<double>> search (int classification, vector <pair<int, FeatureVect
             classification_occurrence_counter++;
 
             //now go through the entire FeatureVector and get the number of occurrences of a '1' for a specific cell
-            for (int j = 0; j < images[i].second.get_size(); j++) {
-                for (int k = 0; k < images[i].second.get_size(); k++) {
+            for (int j = 0; j < 28; j++) {
+                for (int k = 0; k < 28; k++) {
                     if (images[i].second.get_value(j, k) == 1) {
                         cell_occurrence_counter[j][k]++;
                     }
@@ -97,18 +92,13 @@ vector<vector<double>> search (int classification, vector <pair<int, FeatureVect
             //using given formula: (k + #times Fi,j = f for class c)/(2k + Total # of training examples of class c)
             double computed_probability =
                     (k + cell_occurrence_counter[i][j]) / ((2 * k) + classification_occurrence_counter);
-            cell_occurrence_counter[i][j] = computed_probability;
+            classification_cell_probabilities[i][j] = computed_probability;
         }
     }
-    //add these freshly computed probabilities to the 3D model vector
-    for(int i = 0; i < 28; i++) {
-        for (int j = 0; j < 28; j++) {
-            model[classification][i][j] = cell_occurrence_counter[i][j];
-        }
-    }
+    return classification_cell_probabilities;
 }
 
-vector<double> priors (vector <pair<int, FeatureVector>> images) {
+vector<double> priors (vector<pair<int, FeatureVector>> images) {
     double classification_occurrence_counter = 0;
     //intended size of 10 by the end of this function
     vector<double> prior;
@@ -127,9 +117,11 @@ vector<double> priors (vector <pair<int, FeatureVector>> images) {
     }
 }
 
-int calculate_posterior_probability (Feature_Vector input_feature, vector<double> prior) {
-    std::vector<std::pair<int, double>> posteriors;
+int calculate_posterior_probability (FeatureVector input_feature, vector<double> prior) {
+    TrainingModel trainer;
+    vector<pair<int, double>> posteriors;
     double posterior_probability = 0;
+
     for (int i = 0; i < 10; i++) {
         posterior_probability += prior[i];
         for (int j = 0; j<28; j++) {
@@ -153,12 +145,10 @@ int calculate_posterior_probability (Feature_Vector input_feature, vector<double
             max_class = posteriors[i].first;
         }
     }
-
     return max_class;
 }
 
-void read_model (istream &ins) {
-    vector<vector<vector<double>>> model;
+void read_model (ifstream &ins) {
     for (int k = 0; k < 10; k++) {
         for (int i = 0; i < 28; i++) {
             for (int j = 0; j < 28; j++) {
@@ -195,13 +185,13 @@ void write_model (ostream &outs) {
     outs << "}";
 }
 
-istream &operator >> (istream &ins, TrainingModel& model) {
-    model.read_model(ins);
+ifstream &operator >> (ifstream &ins, TrainingModel &models) {
+    models.read_model(ins);
     return ins;
 }
 
-ostream &operator << (ostream &outs, TrainingModel& model) {
-    model.write_model(outs);
+ostream &operator << (ostream &outs, TrainingModel &models) {
+    models.write_model(outs);
     return outs;
 }
 
